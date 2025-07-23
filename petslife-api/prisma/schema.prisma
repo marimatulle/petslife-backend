@@ -23,7 +23,7 @@ model User {
   photo String?
 }
 
-/*model Veterinarian {
+model Veterinarian {
   id Int @id @default(autoincrement())
   crmv String @unique
   name String
@@ -31,4 +31,4 @@ model User {
   username String @unique
   password String
   photo String?
-}*/
+}

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, ValidateIf } from 'class-validator';
 
 export class SignInDto {
   @IsEmail()
@@ -20,4 +20,8 @@ export class SignUpDto {
 
   @IsNotEmpty()
   password: string;
+
+  @ValidateIf((obj: SignUpDto) => obj.crmv !== undefined)
+  @IsOptional()
+  crmv?: string;
 }

@@ -16,8 +16,9 @@
     "skipLibCheck": true,
     "strict": true,
     "strictPropertyInitialization": false,
-    "typeRoots": ["./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types", "./src/types"],
     "types": ["node", "jest"],
     "forceConsistentCasingInFileNames": true
-  }
+  },
+  "include": ["src"]
 }

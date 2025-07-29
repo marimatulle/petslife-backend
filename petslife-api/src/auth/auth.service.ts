@@ -16,11 +16,28 @@ export class AuthService {
   ) {}
 
   async signin(data: SignInDto) {
-    const user = await this.prismaService.user.findUnique({
+    const orConditions = [];
+    if (data.email) {
+      orConditions.push({ email: data.email });
+    }
+    if (data.username) {
+      orConditions.push({ username: data.username });
+    }
+
+    let user = await this.prismaService.user.findFirst({
       where: {
-        email: data.email,
+        OR: orConditions,
       },
     });
+
+    if (!user) {
+      user = await this.prismaService.veterinarian.findFirst({
+        where: {
+          OR: orConditions,
+        },
+      });
+    }
+
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }

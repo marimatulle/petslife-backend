@@ -2,7 +2,12 @@ import { IsEmail, IsNotEmpty, IsOptional, ValidateIf } from 'class-validator';
 
 export class SignInDto {
   @IsEmail()
-  email: string;
+  @IsOptional()
+  email?: string;
+
+  @IsNotEmpty()
+  @IsOptional()
+  username?: string;
 
   @IsNotEmpty()
   password: string;

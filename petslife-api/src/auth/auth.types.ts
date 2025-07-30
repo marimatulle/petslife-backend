@@ -4,6 +4,7 @@ export interface jwtPayload {
   username: string;
   email: string;
   crmv?: string;
+  role: 'user' | 'veterinarian';
   iat?: number;
   exp?: number;
 }

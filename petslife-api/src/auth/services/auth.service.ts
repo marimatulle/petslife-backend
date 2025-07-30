@@ -52,6 +52,8 @@ export class AuthService {
       name: user.name,
       username: user.username,
       email: user.email,
+      crmv: 'crmv' in user ? user.crmv : undefined,
+      role: 'crmv' in user ? 'veterinarian' : 'user',
     });
 
     return {

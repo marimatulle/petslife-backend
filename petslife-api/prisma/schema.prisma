@@ -38,6 +38,7 @@ model Veterinarian {
 model Pet {
   id Int @id @default(autoincrement())
   animalName String
+  animalBirthDate DateTime
   animalAge Int
   animalSpecies String
   animalColor String

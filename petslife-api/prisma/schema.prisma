@@ -21,6 +21,8 @@ model User {
   username String @unique
   password String 
   photo String?
+
+  pets Pet[]
 }
 
 model Veterinarian {
@@ -31,4 +33,21 @@ model Veterinarian {
   username String @unique
   password String
   photo String?
+}
+
+model Pet {
+  id Int @id @default(autoincrement())
+  animalName String
+  animalAge Int
+  animalSpecies String
+  animalColor String
+  animalBreed String
+  animalSex String
+  animalWeight Float?
+  isNeutered Boolean
+  preExistingConditions String?
+  photo String?
+
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 }

@@ -15,14 +15,14 @@ export class ProfileController {
   ) {}
 
   @Get()
-  getProfile(@Req() req: Request) {
+  async getProfile(@Req() req: Request) {
     const user = req.user as jwtPayload;
     const isVet = !!user.crmv;
     return this.getProfileService.getProfile(user.id, isVet);
   }
 
   @Patch()
-  updateProfile(@Req() req: Request, @Body() dto: UpdateProfileDto) {
+  async updateProfile(@Req() req: Request, @Body() dto: UpdateProfileDto) {
     const user = req.user as jwtPayload;
     const isVet = !!user.crmv;
     return this.updateProfileService.updateProfile(user.id, isVet, dto);

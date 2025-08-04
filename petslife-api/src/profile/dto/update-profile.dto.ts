@@ -10,6 +10,5 @@ export class UpdateProfileDto {
   username?: string;
 
   @IsOptional()
-  @IsString()
   photo?: string;
 }

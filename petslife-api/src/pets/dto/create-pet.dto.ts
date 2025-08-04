@@ -5,10 +5,12 @@ import {
   IsNotEmpty,
   IsNumber,
   IsOptional,
+  IsString,
 } from 'class-validator';
 
 export class CreatePetDto {
   @IsNotEmpty()
+  @IsString()
   animalName: string;
 
   @IsNotEmpty()
@@ -20,15 +22,19 @@ export class CreatePetDto {
   animalAge: number;
 
   @IsNotEmpty()
+  @IsString()
   animalSpecies: string;
 
   @IsNotEmpty()
+  @IsString()
   animalColor: string;
 
   @IsNotEmpty()
+  @IsString()
   animalBreed: string;
 
   @IsNotEmpty()
+  @IsString()
   animalSex: string;
 
   @IsOptional()
@@ -44,6 +50,7 @@ export class CreatePetDto {
   isNeutered: boolean;
 
   @IsOptional()
+  @IsString()
   preExistingConditions?: string;
 
   @IsOptional()

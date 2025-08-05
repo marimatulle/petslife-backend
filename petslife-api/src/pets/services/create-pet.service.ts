@@ -12,6 +12,14 @@ export class CreatePetService {
         ...data,
         userId,
       },
+      include: {
+        user: {
+          select: {
+            name: true,
+            username: true,
+          },
+        },
+      },
     });
     return newPet;
   }

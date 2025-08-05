@@ -23,6 +23,12 @@ export class UpdatePetService {
         isNeutered: true,
         preExistingConditions: true,
         photo: true,
+        user: {
+          select: {
+            name: true,
+            username: true,
+          },
+        },
       },
     });
   }

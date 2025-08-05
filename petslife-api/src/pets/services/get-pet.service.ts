@@ -21,6 +21,8 @@ export class GetPetService {
       user: {
         select: {
           id: true,
+          name: true,
+          username: true,
         },
       },
     };

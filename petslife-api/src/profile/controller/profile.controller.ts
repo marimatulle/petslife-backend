@@ -17,14 +17,14 @@ export class ProfileController {
   @Get()
   async getProfile(@Req() req: Request) {
     const user = req.user as jwtPayload;
-    const isVet = !!user.crmv;
+    const isVet = user.role === 'VETERINARIAN';
     return this.getProfileService.getProfile(user.id, isVet);
   }
 
   @Patch()
   async updateProfile(@Req() req: Request, @Body() dto: UpdateProfileDto) {
     const user = req.user as jwtPayload;
-    const isVet = !!user.crmv;
+    const isVet = user.role === 'VETERINARIAN';
     return this.updateProfileService.updateProfile(user.id, isVet, dto);
   }
 }

@@ -14,41 +14,82 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id Int @id @default(autoincrement())
-  name String
-  email String @unique
-  username String @unique
-  password String 
-  photo String?
-
-  pets Pet[]
+enum UserRole {
+  USER
+  VETERINARIAN
 }
 
-model Veterinarian {
-  id Int @id @default(autoincrement())
-  crmv String @unique
-  name String
-  email String @unique
-  username String @unique
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  username String  @unique
   password String
-  photo String?
+  photo    String?
+  role     UserRole
+
+  crmv     String? @unique
+
+  pets     Pet[]
+  vaccines Vaccine[]
+
+  sentRequests     FriendRequest[] @relation("SentRequests")
+  receivedRequests FriendRequest[] @relation("ReceivedRequests")
 }
 
 model Pet {
-  id Int @id @default(autoincrement())
-  animalName String
-  animalBirthDate DateTime
-  animalAge Int
-  animalSpecies String
-  animalColor String
-  animalBreed String
-  animalSex String
-  animalWeight Float?
-  isNeutered Boolean
+  id                    Int      @id @default(autoincrement())
+  animalName            String
+  animalBirthDate       DateTime
+  animalAge             Int
+  animalSpecies         String
+  animalColor           String
+  animalBreed           String
+  animalSex             String
+  animalWeight          Float?
+  isNeutered            Boolean
   preExistingConditions String?
-  photo String?
+  photo                 String?
 
   userId Int
-  user User @relation(fields: [userId], references: [id])
+  user   User @relation(fields: [userId], references: [id])
+
+  vaccines Vaccine[]
 }
+
+model Vaccine {
+  id             Int       @id @default(autoincrement())
+  vaccineName    String
+  vaccineDate    DateTime
+  returnDate     DateTime?
+  proofOfVaccine String?
+
+  petId Int
+  pet   Pet @relation(fields: [petId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+enum FriendRequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+model FriendRequest {
+  id         Int                 @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+
+  sender     User               @relation("SentRequests", fields: [senderId], references: [id])
+  receiver   User               @relation("ReceivedRequests", fields: [receiverId], references: [id])
+
+  status     FriendRequestStatus @default(PENDING)
+
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  @@unique([senderId, receiverId])
+}
+

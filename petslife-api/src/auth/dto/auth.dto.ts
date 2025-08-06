@@ -1,4 +1,15 @@
-import { IsEmail, IsNotEmpty, IsOptional, ValidateIf } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsEnum,
+  ValidateIf,
+} from 'class-validator';
+
+export enum UserRole {
+  USER = 'USER',
+  VETERINARIAN = 'VETERINARIAN',
+}
 
 export class SignInDto {
   @IsEmail()
@@ -26,7 +37,10 @@ export class SignUpDto {
   @IsNotEmpty()
   password: string;
 
-  @ValidateIf((obj: SignUpDto) => obj.crmv !== undefined)
-  @IsOptional()
+  @IsEnum(UserRole)
+  role: UserRole;
+
+  @ValidateIf((obj: SignUpDto) => obj.role === UserRole.VETERINARIAN)
+  @IsNotEmpty()
   crmv?: string;
 }

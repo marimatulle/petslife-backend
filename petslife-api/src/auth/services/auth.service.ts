@@ -3,7 +3,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { SignInDto, SignUpDto } from '../dto/auth.dto';
+import { SignInDto, SignUpDto, UserRole } from '../dto/auth.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -73,9 +73,9 @@ export class AuthService {
 
     const hashedPassword: string = await bcrypt.hash(data.password, 10);
 
-    if (data.crmv) {
-      if (!data.crmv.trim()) {
-        throw new BadRequestException('CRMV cannot be empty for veterinarians');
+    if (data.role === UserRole.VETERINARIAN) {
+      if (!data.crmv || !data.crmv.trim()) {
+        throw new BadRequestException('CRMV is required for veterinarians');
       }
       const newVet = await this.prismaService.veterinarian.create({
         data: {
@@ -92,11 +92,14 @@ export class AuthService {
         email: newVet.email,
         username: newVet.username,
         crmv: newVet.crmv,
+        role: UserRole.VETERINARIAN,
       };
     } else {
       const newUser = await this.prismaService.user.create({
         data: {
-          ...data,
+          name: data.name,
+          email: data.email,
+          username: data.username,
           password: hashedPassword,
         },
       });
@@ -105,6 +108,7 @@ export class AuthService {
         name: newUser.name,
         email: newUser.email,
         username: newUser.username,
+        role: UserRole.USER,
       };
     }
   }

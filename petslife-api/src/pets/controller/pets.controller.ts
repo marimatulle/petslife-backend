@@ -11,6 +11,7 @@ import {
   ParseIntPipe,
   Patch,
   Delete,
+  ForbiddenException,
 } from '@nestjs/common';
 import { CreatePetService } from '../services/create-pet.service';
 import { GetPetService } from '../services/get-pet.service';
@@ -33,9 +34,16 @@ export class PetsController {
   @Post()
   async createPet(@Req() req: Request, @Body() body: CreatePetDto) {
     const userId = req.user?.id;
+    const userRole = req.user?.role;
 
     if (!userId) {
       throw new UnauthorizedException('User not authenticated');
+    }
+
+    if (userRole !== 'USER') {
+      throw new ForbiddenException(
+        'Only users with role USER can create pets.',
+      );
     }
 
     return this.createPetService.createPet(userId, body);
